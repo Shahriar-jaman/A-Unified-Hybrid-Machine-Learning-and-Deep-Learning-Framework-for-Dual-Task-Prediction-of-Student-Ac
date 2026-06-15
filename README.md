@@ -70,6 +70,18 @@ aimhess/
 ```
 
 ---
+Also, create a virtual environment for this project.
+# Activate
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt     # (if you create one)
+
+# Run the project
+python app.py
+
+# Deactivate when done
+deactivate
 
 ## 🚀 Installation & Setup
 
