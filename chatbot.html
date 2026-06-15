@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}AI Mentor - AIMHESS{% endblock %}
+
+{% block content %}
+<div class="container py-5 min-vh-100">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-warning mb-2">Your Personal AI Mentor</h1>
+                <p class="text-white-50 lead">Always here to support your academic journey and wellbeing ❤️</p>
+            </div>
+
+            <div class="card shadow-2xl border-0" style="border-radius: 25px; overflow: hidden; background: #0a0a14;">
+                
+                <!-- Chat Area -->
+                <div class="card-body p-0" style="height: 65vh; overflow-y: auto;" id="chatBox">
+                    <div class="p-4 pb-5">
+
+                        {% if chat_history|length == 0 %}
+                        <div class="text-center py-5">
+                            <div class="bg-gradient text-white rounded-4 p-5 mx-auto" 
+                                 style="background: linear-gradient(135deg, #667eea, #764ba2); max-width: 520px;">
+                                <h3 class="mb-3">👋 Hello, I'm AIMHESS AI</h3>
+                                <p class="lead mb-0">
+                                    How are you feeling today?<br>
+                                    Tell me about your studies, stress, or anything on your mind.
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% for msg in chat_history %}
+                            {% if msg.role == 'user' %}
+                                <div class="text-end mb-4">
+                                    <div class="d-inline-block bg-warning text-dark rounded-4 px-4 py-3" 
+                                         style="max-width: 80%; white-space: pre-wrap;">
+                                        <strong>You:</strong><br>
+                                        {{ msg.content }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="text-start mb-4">
+                                    <div class="d-inline-block bg-secondary text-white rounded-4 px-4 py-3" 
+                                         style="max-width: 85%; white-space: pre-wrap;">
+                                        <strong class="text-warning">AI Mentor:</strong><br>
+                                        {{ msg.content }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="card-footer bg-dark p-4 border-top border-warning border-3">
+                    <form method="POST" class="d-flex gap-3 align-items-center">
+                        <input type="text" 
+                               name="msg" 
+                               class="form-control form-control-lg rounded-pill shadow-sm" 
+                               placeholder="Type your message here..." 
+                               required 
+                               autofocus 
+                               autocomplete="off">
+                        <button type="submit" 
+                                class="btn btn-warning btn-lg rounded-pill px-5 shadow fw-bold">
+                            Send <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <a href="/result" class="btn btn-outline-light btn-lg rounded-pill px-5 shadow">
+                            ← Back to Results
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll to bottom
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatBox = document.getElementById('chatBox');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    });
+
+    // Optional: Scroll again after form submit (in case of slow response)
+    window.addEventListener('load', function() {
+        const chatBox = document.getElementById('chatBox');
+        if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+    });
+</script>
+
+{% endblock %}
+
+{% block extra %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center">
+            <a href="/home" class="btn btn-outline-light btn-lg px-4 me-3 mb-3 shadow-sm">
+                <i class="fas fa-home me-2"></i> Back to Dashboard
+            </a>
+            <a href="/about" class="btn btn-outline-light btn-lg px-4 mb-3 shadow-sm">
+                <i class="fas fa-info-circle me-2"></i> About AIMHESS
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block title %}AIMHESS Risk Assessment{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-warning mb-3">AIMHESS Predictive Assessment</h1>
+        <p class="lead text-white-50 mx-auto" style="max-width: 750px;">
+            Input your parameters below. Our LightGBM baseline ensembles and Multi-Model Deep Learning architectures will synthesize your academic risk and stress intensity indices in real-time.
+        </p>
+    </div>
+
+    <form action="/risk" method="POST" class="needs-validation" novalidate>
+        <div class="row justify-content-center g-4">
+            
+            <div class="col-xl-4 col-md-6">
+                <div class="card shadow-lg border-0 text-white h-100" 
+                     style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 20px;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="p-3 bg-warning text-dark rounded-3 me-3">
+                                <i class="fas fa-graduation-cap fa-lg"></i>
+                            </div>
+                            <div>
+                                <span class="badge bg-warning text-dark text-uppercase mb-1">Section 1</span>
+                                <h4 class="fw-bold mb-0">Core Academic</h4>
+                            </div>
+                        </div>
+                        <hr class="border-white border-opacity-25 mb-4">
+
+                        <div class="mb-3">
+                            <label for="CGPA" class="form-label fw-bold">Current CGPA</label>
+                            <input type="number" step="0.01" min="0.0" max="4.0" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="CGPA" name="CGPA" placeholder="e.g., 3.45" required>
+                            <div class="invalid-feedback">Please enter a valid CGPA (0.0 - 4.0).</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="StudyHoursDaily" class="form-label fw-bold">Daily Study Hours</label>
+                            <input type="number" step="0.1" min="0" max="24" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="StudyHoursDaily" name="StudyHoursDaily" placeholder="e.g., 3.5" required>
+                            <div class="invalid-feedback">Please enter daily study hours.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="AttendanceRate" class="form-label fw-bold">Class Attendance Rate (%)</label>
+                            <input type="number" min="0" max="100" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="AttendanceRate" name="AttendanceRate" placeholder="e.g., 85" required>
+                            <div class="invalid-feedback">Please enter a percentage from 0 to 100.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="PrivateTutoring" class="form-label fw-bold">Private Tutoring Support</label>
+                            <select class="form-select bg-dark bg-opacity-50 text-white border-white border-opacity-25" id="PrivateTutoring" name="PrivateTutoring" required>
+                                <option value="" disabled selected hidden>Select choice...</option>
+                                <option value="Yes">Yes, enrolled in tutoring</option>
+                                <option value="No">No independent tutoring</option>
+                            </select>
+                            <div class="invalid-feedback">Please select an option.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6">
+                <div class="card shadow-lg border-0 text-white h-100" 
+                     style="background: linear-gradient(135deg, #7b4397, #dc2430); border-radius: 20px;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="p-3 bg-info text-dark rounded-3 me-3">
+                                <i class="fas fa-brain fa-lg"></i>
+                            </div>
+                            <div>
+                                <span class="badge bg-info text-dark text-uppercase mb-1">Section 2</span>
+                                <h4 class="fw-bold mb-0">Wellbeing & Load</h4>
+                            </div>
+                        </div>
+                        <hr class="border-white border-opacity-25 mb-4">
+
+                        <div class="mb-3">
+                            <label for="AcademicStress" class="form-label fw-bold">Perceived Academic Stress</label>
+                            <select class="form-select bg-dark bg-opacity-50 text-white border-white border-opacity-25" id="AcademicStress" name="AcademicStress" required>
+                                <option value="" disabled selected hidden>Rate from 1 to 10...</option>
+                                {% for n in range(1, 11) %}
+                                <option value="{{ n }}">{{ n }} - {% if n <= 3 %}Low{% elif n <= 7 %}Moderate{% else %}Severe Strain{% endif %}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Please rate your stress level.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="SleepHours" class="form-label fw-bold">Average Nightly Sleep (Hours)</label>
+                            <input type="number" step="0.5" min="0" max="24" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="SleepHours" name="SleepHours" placeholder="e.g., 6.5" required>
+                            <div class="invalid-feedback">Please specify typical sleep hours.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="MotivationScore" class="form-label fw-bold">Personal Motivation Index</label>
+                            <input type="number" min="0" max="100" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="MotivationScore" name="MotivationScore" placeholder="Scale 0 - 100 (e.g., 75)" required>
+                            <div class="invalid-feedback">Please provide a motivation value between 0 and 100.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="InternetQuality" class="form-label fw-bold">Connectivity/Internet Quality</label>
+                            <select class="form-select bg-dark bg-opacity-50 text-white border-white border-opacity-25" id="InternetQuality" name="InternetQuality" required>
+                                <option value="" disabled selected hidden>Rate quality...</option>
+                                <option value="1">1 - Poor / Highly Unstable</option>
+                                <option value="2">2 - Subpar</option>
+                                <option value="3">3 - Basic / Functional</option>
+                                <option value="4">4 - Good Infrastructure</option>
+                                <option value="5">5 - Excellent High-Speed Quality</option>
+                            </select>
+                            <div class="invalid-feedback">Please rate your connectivity.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-md-6">
+                <div class="card shadow-lg border-0 text-white h-100" 
+                     style="background: linear-gradient(135deg, #11998e, #38ef7d); border-radius: 20px;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="p-3 bg-dark text-warning rounded-3 me-3">
+                                <i class="fas fa-users fa-lg"></i>
+                            </div>
+                            <div>
+                                <span class="badge bg-dark text-warning text-uppercase mb-1">Section 3</span>
+                                <h4 class="fw-bold mb-0">Demographics</h4>
+                            </div>
+                        </div>
+                        <hr class="border-white border-opacity-25 mb-4">
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label for="Age" class="form-label fw-bold">Age</label>
+                                <input type="number" min="15" max="100" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                       id="Age" name="Age" placeholder="e.g., 20" required>
+                                <div class="invalid-feedback">Required.</div>
+                            </div>
+                            <div class="col-6">
+                                <label for="Gender" class="form-label fw-bold">Gender Identity</label>
+                                <select class="form-select bg-dark bg-opacity-50 text-white border-white border-opacity-25" id="Gender" name="Gender" required>
+                                    <option value="" disabled selected hidden>Select...</option>
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                                <div class="invalid-feedback">Required.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="FamilyIncome" class="form-label fw-bold">Annual Family Income ($)</label>
+                            <input type="number" min="0" class="form-control bg-dark bg-opacity-20 text-white border-white border-opacity-25" 
+                                   id="FamilyIncome" name="FamilyIncome" placeholder="e.g., 54000" required>
+                            <div class="invalid-feedback">Please provide annual structural baseline income.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ParentalEducation" class="form-label fw-bold">Parental Higher Education Tier</label>
+                            <select class="form-select bg-dark bg-opacity-50 text-white border-white border-opacity-25" id="ParentalEducation" name="ParentalEducation" required>
+                                <option value="" disabled selected hidden>Select education tier...</option>
+                                <option value="1">1 - Primary Schooling or Lower</option>
+                                <option value="2">2 - High School Graduate</option>
+                                <option value="3">3 - Vocational Training / Some College</option>
+                                <option value="4">4 - University Bachelor Degree</option>
+                                <option value="5">5 - Advanced Postgraduate Degree (MS/PhD)</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a demographic validation value.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <button type="submit" class="btn btn-warning btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg fs-5 border-0 transition-scale">
+                Run Diagnostic Algorithms <i class="fas fa-microchip ms-2"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-select option {
+    background-color: #212529;
+    color: #fff;
+}
+.form-control:focus, .form-select:focus {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+.transition-scale {
+    transition: transform 0.2s ease-in-out;
+}
+.transition-scale:hover {
+    transform: scale(1.03);
+}
+</style>
+
+<script>
+(() => {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

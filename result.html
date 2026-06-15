@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}Your AIMHESS Results{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-warning mb-3">Dual-Platform Research Report</h1>
+        <p class="lead text-white-50">
+            Based on your assessment • Powered by AI Models
+        </p>
+    </div>
+
+    <div class="row justify-content-center g-4 mb-5">
+        
+        <!-- Academic Performance Card -->
+        <div class="col-lg-6 col-xl-5">
+            <div class="card shadow-lg border-0 text-white overflow-hidden h-100"
+                 style="background: linear-gradient(135deg, #2a5298, #1e3c72); border-radius: 20px;">
+                <div class="card-body text-center p-4 p-xl-5">
+                    <div class="badge bg-warning text-dark mb-3 px-3 py-1 fw-bold">PLATFORM 1</div>
+                    <h3 class="mb-4 fw-bold">Academic Performance</h3>
+
+                    {% if 'perf_level' not in session %}
+                        <p class="lead opacity-75 mb-4">No assessment completed yet</p>
+                        <a href="/risk" class="btn btn-light btn-lg px-5 py-3 rounded-pill shadow">
+                            Take Assessment
+                        </a>
+                    {% else %}
+
+                        {% set p_color = 'text-success' %}
+                        {% set circle_color = '#28a745' %}
+
+                        {% if p_score >= 75 %}
+                            {% set p_color = 'text-success' %}
+                            {% set circle_color = '#28a745' %}
+                        {% elif p_score >= 45 %}
+                            {% set p_color = 'text-warning' %}
+                            {% set circle_color = '#ffc107' %}
+                        {% else %}
+                            {% set p_color = 'text-danger' %}
+                            {% set circle_color = '#dc3545' %}
+                        {% endif %}
+
+                        <h1 class="display-5 fw-bold mb-4">
+                            <span class="{{ p_color }}">{{ session.perf_level }} Performance</span>
+                        </h1>
+
+                        <div class="circular-progress dynamic-progress-circle mx-auto mb-4" 
+                             data-progress="{{ p_score }}" 
+                             style="--progress: {{ p_score }}; --circle-color: {{ circle_color }};">
+                            <span class="progress-value">{{ p_score | round(1) }}%</span>
+                        </div>
+
+                        <p class="lead mb-2">Score: <strong>{{ session.perf_level_score }}</strong></p>
+                        <p class="text-white-50 small">Deep Learning Corrected: <strong>{{ dl_acad_corrected }}/100</strong></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Stress & Mental Health Card -->
+        <div class="col-lg-6 col-xl-5">
+            <div class="card shadow-lg border-0 text-white overflow-hidden h-100"
+                 style="background: linear-gradient(135deg, #7b4397, #dc2430); border-radius: 20px;">
+                <div class="card-body text-center p-4 p-xl-5">
+                    <div class="badge bg-info text-dark mb-3 px-3 py-1 fw-bold">PLATFORM 2</div>
+                    <h3 class="mb-4 fw-bold">Mental Health & Stress</h3>
+
+                    {% if 'stress_level' not in session %}
+                        <p class="lead opacity-75 mb-4">No assessment completed yet</p>
+                        <a href="/risk" class="btn btn-light btn-lg px-5 py-3 rounded-pill shadow">
+                            Take Assessment
+                        </a>
+                    {% else %}
+
+                        {% set s_color = 'text-success' %}
+                        {% set s_circle_color = '#28a745' %}
+                        {% set s_icon = 'smile-beam' %}
+
+                        {% if s_score >= 60 %}
+                            {% set s_color = 'text-danger' %}
+                            {% set s_circle_color = '#dc3545' %}
+                            {% set s_icon = 'sad-tear' %}
+                        {% elif s_score >= 30 %}
+                            {% set s_color = 'text-warning' %}
+                            {% set s_circle_color = '#ffc107' %}
+                            {% set s_icon = 'meh' %}
+                        {% endif %}
+
+                        <h1 class="display-5 fw-bold mb-4">
+                            <span class="{{ s_color }}">{{ session.stress_level }} Stress</span>
+                        </h1>
+
+                        <div class="circular-progress dynamic-progress-circle mx-auto mb-4" 
+                             data-progress="{{ s_score }}" 
+                             style="--progress: {{ s_score }}; --circle-color: {{ s_circle_color }};">
+                            <i class="fas fa-{{ s_icon }} position-absolute text-white-50 fa-2x" style="top: 25px; z-index: 5;"></i>
+                            <span class="progress-value">{{ s_score | round(1) }}%</span>
+                        </div>
+
+                        <p class="lead mb-2">Score: <strong>{{ session.stress_level_score }}</strong></p>
+                        <p class="text-white-50 small">Deep Learning Corrected: <strong>{{ dl_mh_corrected }}/100</strong></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overall Risk -->
+    <div class="text-center my-5 py-3">
+        <div class="card bg-dark bg-opacity-90 border-0 shadow-lg p-4 p-md-5"
+             style="border-radius: 20px; border: 3px solid #ffc107; max-width: 850px; margin: 0 auto;">
+            
+            <h2 class="text-warning mb-4 fw-bold display-6">Overall Risk Assessment</h2>
+            
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 border-end border-white border-opacity-25">
+                    <h5 class="text-white-50 text-uppercase small mb-2">Baseline Risk</h5>
+                    <h3 class="text-info fw-bold display-5">{{ original_risk }}%</h3>
+                    <span class="badge bg-secondary px-3 py-2">Tier: {{ session.student_risk_level or 'N/A' }}</span>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5 class="text-warning text-uppercase small mb-2">Corrected Risk (DL)</h5>
+                    <h3 class="text-danger fw-bold display-5">{{ corrected_risk }}%</h3>
+                    <span class="badge bg-danger px-3 py-2">Tier: {{ corrected_level }}</span>
+                </div>
+            </div>
+
+            <a href="/chatbot" class="btn btn-warning btn-lg px-5 py-4 fw-bold shadow-lg rounded-pill fs-4">
+                Talk to AI Mentor <i class="fas fa-comments ms-2"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="/planner" class="btn btn-success">📅 Generate Daily Planner</a>
+        <a href="/home" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill me-3">← Dashboard</a>
+        <a href="/risk" class="btn btn-outline-warning btn-lg px-5 py-3 rounded-pill">Re-run Assessment</a>
+    </div>
+</div>
+
+<style>
+.circular-progress {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--circle-color, #ffc107) 0% calc(var(--progress, 0) * 1%),
+        rgba(255, 255, 255, 0.15) calc(var(--progress, 0) * 1%) 100%
+    );
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.circular-progress::before {
+    content: '';
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: #1e3c72;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.progress-value {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: white;
+    z-index: 10;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.dynamic-progress-bar').forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        if (width) bar.style.width = width + '%';
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center">
+            <a href="/chatbot" class="btn btn-outline-light btn-lg px-4 me-3 mb-3 shadow-sm">
+                <i class="fas fa-robot text-warning me-2"></i> Talk to AI Mentor
+            </a>
+            <a href="/about" class="btn btn-outline-light btn-lg px-4 mb-3 shadow-sm">
+                <i class="fas fa-info-circle me-2"></i> About AIMHESS
+            </a>
+        </div>
+    </div>
+{% endblock %}

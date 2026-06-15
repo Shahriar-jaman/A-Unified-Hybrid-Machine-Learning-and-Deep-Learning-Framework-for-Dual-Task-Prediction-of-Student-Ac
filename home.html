@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-warning mb-3">Welcome, {{ session.username }}!</h1>
+        <p class="lead text-white-50">Your research-powered dual-platform student success & wellbeing dashboard</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <div class="card shadow-lg border-0 hover-card"
+                 style="background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 24px; overflow: hidden;">
+                <div class="card-body text-center p-5 p-md-6">
+                    <i class="fas fa-project-diagram fa-6x text-warning mb-4"></i>
+                    <h3 class="text-white fw-bold mb-4">Dual-Platform Risk Assessment</h3>
+                    
+                    <p class="text-white-50 lead mb-4">
+                         quick questions • ~60 seconds<br>
+                        Predicts academic performance risk metrics (Platform 1)<br>
+                        alongside stress intensity indicators & wellbeing balances (Platform 2)
+                    </p>
+
+                    <p class="text-white-75 small mb-5">
+                        Powered by Multi-Model Deep Learning Architectures • Your data stays fully private
+                    </p>
+
+                    <a href="/risk" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow-lg text-dark">
+                        Start Assessment Now →
+                    </a>
+
+                    {% if session.student_risk_level %}
+                    <div class="mt-5 pt-4 border-top border-warning border-opacity-25">
+                        <p class="text-white-75 mb-3 fw-bold tracking-wide text-uppercase small">Your Latest Diagnostic Pass</p>
+                        
+                        <div class="mb-4">
+                            <span class="badge bg-{{ 'danger' if session.student_risk_level in ['High', 'Very High'] else 'warning' if session.student_risk_level in ['Moderate', 'Medium'] else 'success' }} fs-5 px-4 py-2 shadow-sm">
+                                {{ session.student_risk_level }} Overall Risk
+                            </span>
+                            <div class="mt-2">
+                                <small class="text-white-50">
+                                    Baseline High-Risk Classifier Probability: {{ session.student_risk_score }}%
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 text-start mt-2">
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 h-100 border border-white border-opacity-10 shadow-sm" style="background: rgba(0,0,0,0.2);">
+                                    <div class="text-warning small fw-bold mb-1">
+                                        <i class="fas fa-graduation-cap me-1"></i> PLATFORM 1: ACADEMIC
+                                    </div>
+                                    <div class="text-white fw-bold fs-5 mb-1">{{ session.perf_level|default('Calculated') }} Profile</div>
+                                    <div class="text-white-50 small">Internal Score Index: {{ session.perf_level_score|default('Pending') }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 h-100 border border-white border-opacity-10 shadow-sm" style="background: rgba(0,0,0,0.2);">
+                                    <div class="text-info small fw-bold mb-1">
+                                        <i class="fas fa-brain me-1"></i> PLATFORM 2: MENTAL HEALTH
+                                    </div>
+                                    <div class="text-white fw-bold fs-5 mb-1">{{ session.stress_level|default('Calculated') }} Stress</div>
+                                    <div class="text-white-50 small">Intensity Index: {{ session.stress_level_score|default('Pending') }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-2">
+                            <a href="/result" class="btn btn-outline-warning btn-sm px-4 rounded-pill fw-bold">
+                                View Full Neural Networks Comparison Matrix →
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/planner" class="btn btn-success">📅 Generate Daily Planner</a>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center">
+            <a href="/chatbot" class="btn btn-outline-light btn-lg px-4 me-3 mb-3 shadow-sm">
+                <i class="fas fa-robot text-warning me-2"></i> Talk to AI Mentor
+            </a>
+            <a href="/about" class="btn btn-outline-light btn-lg px-4 mb-3 shadow-sm">
+                <i class="fas fa-info-circle me-2"></i> About AIMHESS
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid rgba(255, 193, 7, 0.15) !important;
+    }
+    .hover-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
+        border-color: rgba(255, 193, 7, 0.35) !important;
+    }
+    .btn-warning {
+        background: linear-gradient(90deg, #ffca28, #ffb300);
+        border: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-warning:hover {
+        background: linear-gradient(90deg, #ffb300, #ffca28);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 179, 0, 0.4) !important;
+    }
+    .tracking-wide {
+        letter-spacing: 0.08em;
+    }
+</style>
+{% endblock %}

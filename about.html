@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}About Us – AIMHESS{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-warning mb-3">About AIMHESS</h1>
+        <p class="lead text-white-50 fs-4">AIMHESS – AI That Saves Futures</p>
+    </div>
+
+    <!-- Mission -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 p-5 text-white" style="background: rgba(30,10,70,0.8); border-radius: 30px;">
+                <h2 class="text-warning text-center mb-4">Our Mission</h2>
+                <p class="lead text-center fs-5">
+                    Every year, thousands of students silently struggle with stress, anxiety, and dropout risk.<br>
+                    <strong>We built AIMHESS to detect these crises early — and act before it's too late.</strong>
+                </p>
+                <p class="text-center mt-4">
+                    Using 99.8% accurate AI, real-time guardian alerts, and 24/7 AI mentoring — 
+                    we’re not just predicting problems. We’re preventing them.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team -->
+    <h2 class="text-center text-warning mb-5">The Minds Behind AIMHESS</h2>
+    <div class="row g-5 justify-content-center">
+
+        <!-- MD Sakib Sarker -->
+        <div class="col-md-4 text-center">
+            <img src="{{ url_for('static', filename='img/sakib.jpg') }}" 
+                 class="rounded-circle shadow-lg mb-4 border border-warning border-4" 
+                 width="180" height="180" alt="Sakib">
+            <h4 class="text-warning fw-bold">MD Sakib Sarker</h4>
+            <p class="text-info">Lead AI Engineer & Full-Stack Developer</p>
+            <p class="small text-white-50">sakib.sarker@northsouth.edu</p>
+        </div>
+
+        <!-- Shahriar Jaman -->
+        <div class="col-md-4 text-center">
+            <img src="{{ url_for('static', filename='img/shahriar.jpg') }}" 
+                 class="rounded-circle shadow-lg mb-4 border border-warning border-4" 
+                 width="180" height="180" alt="Shahriar">
+            <h4 class="text-warning fw-bold">Shahriar Jaman</h4>
+            <p class="text-info">Lead Data analyst,Data Scientist & Backend Enginner</p>
+            <p class="small text-white-50">shahriar.jaman01@northsouth.edu</p>
+        </div>
+
+    <!-- Contact & Support -->
+    <div class="text-center mt-5">
+        <div class="card shadow-lg border-0 p-5" style="background: rgba(255,215,0,0.1); border-radius: 30px;">
+            <h3 class="text-warning mb-4">Need Help? We're Here 24/7</h3>
+            <p class="lead mb-4">
+                For technical support, feedback, or emergency assistance:01608134890
+                
+            </p>
+            <a href="mailto:support@aimhess.com" class="btn btn-warning btn-lg px-5 shadow-lg">
+                <i class="fas fa-envelope me-2"></i> Support@aimhess.com
+            </a>
+            <p class="mt-4 text-white-50">
+                Your privacy is our priority. All conversations are confidential.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

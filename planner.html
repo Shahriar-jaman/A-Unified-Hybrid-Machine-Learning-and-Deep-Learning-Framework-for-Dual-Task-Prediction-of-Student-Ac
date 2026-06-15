@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}AI Daily Planner{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-warning">🗓️ Your AI-Generated Daily Planner</h1>
+        <p class="lead text-white-50">
+            Tailored for <strong>{{ perf_level }} Performance</strong> + <strong>{{ stress_level }} Stress</strong>
+        </p>
+    </div>
+
+    <div class="card shadow-lg bg-dark text-white border-warning" style="border-radius: 20px;">
+        <div class="card-header bg-gradient text-center py-4" style="background: linear-gradient(135deg, #ffc107, #ff8c00); color: #000;">
+            <h4 class="mb-0">{{ planner.date }}</h4>
+        </div>
+        
+        <div class="card-body p-5">
+            <div class="mb-4">
+                <strong>Academic Level:</strong> {{ planner.perf_level }} ({{ planner.perf_score }})<br>
+                <strong>Stress Level:</strong> {{ planner.stress_level }} ({{ planner.stress_score }})
+            </div>
+            
+            <hr class="border-light">
+            
+            <div class="ai-plan-content" style="white-space: pre-line; line-height: 1.8;">
+                {{ planner.ai_plan }}
+            </div>
+        </div>
+
+        <div class="card-footer bg-dark p-4 text-center border-top border-warning">
+            <a href="/planner/pdf" class="btn btn-success btn-lg px-5 rounded-pill shadow me-3">
+                <i class="fas fa-download"></i> Download as PDF
+            </a>
+            <a href="/chatbot" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                Ask AI Mentor
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/result" class="btn btn-outline-light">← Back to Results</a>
+        <a href="/planner" class="btn btn-warning ms-3">Generate New Planner</a>
+    </div>
+</div>
+{% endblock %}
