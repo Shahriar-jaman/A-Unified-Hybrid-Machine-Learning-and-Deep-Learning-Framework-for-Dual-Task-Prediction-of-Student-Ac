@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% block title %}AIMHESS Risk Assessment{% endblock %}
+{% block title %}Predictive Assessment{% endblock %}
 
 {% block content %}
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-warning mb-3">AIMHESS Predictive Assessment</h1>
-        <p class="lead text-white-50 mx-auto" style="max-width: 750px;">
-            Input your parameters below. Our LightGBM baseline ensembles and Multi-Model Deep Learning architectures will synthesize your academic risk and stress intensity indices in real-time.
-        </p>
+        <h1 class="display-4 fw-bold text-warning mb-3">Dual-Task Predictive Assessment</h1>
+  <p class="lead text-white-50 mx-auto" style="max-width: 750px;">
+      Input your parameters below. Our framework optimizes a shared dataset across a classification network for academic pass/fail outcomes and a regression network for psychological stress tracking.
+  </p>
     </div>
 
     <form action="/risk" method="POST" class="needs-validation" novalidate>
@@ -72,7 +72,7 @@
                             </div>
                             <div>
                                 <span class="badge bg-info text-dark text-uppercase mb-1">Section 2</span>
-                                <h4 class="fw-bold mb-0">Wellbeing & Load</h4>
+                                <h4 class="fw-bold mb-0">Psychological State</h4>
                             </div>
                         </div>
                         <hr class="border-white border-opacity-25 mb-4">
