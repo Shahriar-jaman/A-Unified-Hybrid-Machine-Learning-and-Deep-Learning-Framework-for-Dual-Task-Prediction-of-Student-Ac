@@ -6,7 +6,7 @@
     <div class="text-center mb-5">
         <h1 class="display-5 fw-bold text-warning">🗓️ Your AI-Generated Daily Planner</h1>
         <p class="lead text-white-50">
-            Tailored for <strong>{{ perf_level }} Performance</strong> + <strong>{{ stress_level }} Stress</strong>
+Tailored for <strong>Academic Status: {{ perf_level }}</strong> + <strong>Psychological Stress: {{ stress_level }}</strong>
         </p>
     </div>
 
@@ -17,8 +17,8 @@
         
         <div class="card-body p-5">
             <div class="mb-4">
-                <strong>Academic Level:</strong> {{ planner.perf_level }} ({{ planner.perf_score }})<br>
-                <strong>Stress Level:</strong> {{ planner.stress_level }} ({{ planner.stress_score }})
+                <strong>Academic Status:</strong> {{ planner.perf_level }} ({{ planner.perf_score }})<br>
+  <strong>Psychological Stress Level:</strong> {{ planner.stress_level }} ({{ planner.stress_score }})
             </div>
             
             <hr class="border-light">
